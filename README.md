@@ -1,4 +1,20 @@
+<p align="center">
+  <img alt="STM32CubeIDE" src="https://img.shields.io/badge/STM32CubeIDE-6.16.1-16A1E2?style=for-the-badge">
+  <img alt="NUCLEO-L152RE" src="https://img.shields.io/badge/NUCLEO-L152RE-1E5AA8?style=for-the-badge">
+  <img alt="IKS01A3" src="https://img.shields.io/badge/IKS01A3-MEMS%20%26%20Env-1B998B?style=for-the-badge">
+  <img alt="MAX7219" src="https://img.shields.io/badge/MAX7219-7%20SEG-FFB347?style=for-the-badge">
+  <img alt="Embedded C" src="https://img.shields.io/badge/Embedded-C-444444?style=for-the-badge">
+</p>
+
+<p align="center">
+  <img src="assets/plane-hero.svg" alt="SimPlane illustration" width="980">
+</p>
+
 # ProjetS6-STM32-SimPlane
+
+<p align="center">
+  <strong>Simulation d'un avion miniature sur STM32CubeIDE avec capteurs MEMS, afficheur MAX7219, LEDs et buzzer PWM.</strong>
+</p>
 
 Firmware STM32CubeIDE pour une maquette d'avion simplifiee basee sur une
 `NUCLEO-L152RE` et une shield `X-NUCLEO-IKS01A3`. Le projet lit plusieurs
@@ -9,6 +25,27 @@ buzzer PWM, puis simule differents etats de vol et de moteur.
 > `APP_DISPLAY_DIAG_ONLY` dans `Core/Src/main.c`. Avec la valeur `1`, la carte
 > boucle sur des tests 7 segments. Passez cette constante a `0` pour activer la
 > simulation complete de l'avion.
+
+## Recap Capteurs & Peripheriques
+
+### Capteurs
+
+- `LSM6DSO` - accelerometre et gyroscope principaux.
+- `LIS2DW12` - accelerometre supplementaire.
+- `LIS2MDL` - magnetometre.
+- `HTS221` - temperature et humidite.
+- `LPS22HH` - pression et temperature.
+- `STTS751` - temperature de secours.
+
+### Peripheriques
+
+- `ADC1` - lecture des potentiometres `RV1` et `RV2`.
+- `I2C1` - communication avec la shield `X-NUCLEO-IKS01A3`.
+- `SPI1` - pilotage du MAX7219 pour l'affichage 7 segments.
+- `TIM3` - generation PWM du buzzer.
+- `TIM6` - base de temps logicielle pour les taches periodiques.
+- `USART2` - debug serie et `printf`.
+- `GPIO` / `EXTI` - boutons, LEDs et signaux auxiliaires.
 
 ## Vue D'ensemble
 
