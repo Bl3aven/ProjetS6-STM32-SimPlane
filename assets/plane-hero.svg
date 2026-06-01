@@ -1,149 +1,121 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" role="img" aria-labelledby="title desc">
-  <title id="title">SimPlane banner</title>
-  <desc id="desc">STM32 flight simulation banner with sensors, display and peripherals</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">SimPlane dashboard</title>
+  <desc id="desc">Terminal-style aircraft dashboard with a clear plane silhouette and sensor readings.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#07111f"/>
-      <stop offset="55%" stop-color="#0c1f34"/>
-      <stop offset="100%" stop-color="#0e3b4f"/>
+      <stop offset="0%" stop-color="#020305"/>
+      <stop offset="100%" stop-color="#07121d"/>
     </linearGradient>
     <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#12263b"/>
-      <stop offset="100%" stop-color="#0b1828"/>
+      <stop offset="0%" stop-color="#07131f"/>
+      <stop offset="100%" stop-color="#040a10"/>
     </linearGradient>
-    <linearGradient id="plane" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#dff9ff"/>
-      <stop offset="45%" stop-color="#9cecff"/>
-      <stop offset="100%" stop-color="#58d6c3"/>
+    <linearGradient id="planeFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dff9ff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#7de4ff" stop-opacity="0.10"/>
     </linearGradient>
     <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#ffb347"/>
-      <stop offset="100%" stop-color="#ff7a59"/>
+      <stop offset="0%" stop-color="#ffcf7a"/>
+      <stop offset="100%" stop-color="#ff8559"/>
     </linearGradient>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.35"/>
-    </filter>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="18" result="blur"/>
-      <feColorMatrix in="blur" type="matrix" values="
-        1 0 0 0 0
-        0 1 0 0 0
-        0 0 1 0 0
-        0 0 0 0.7 0"/>
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.38"/>
     </filter>
   </defs>
 
-  <rect width="1200" height="380" rx="30" fill="url(#bg)"/>
-  <rect x="20" y="20" width="1160" height="340" rx="24" fill="url(#panel)" stroke="#1c3953" stroke-width="1.5"/>
+  <rect width="1200" height="460" rx="22" fill="url(#bg)"/>
+  <rect x="14" y="14" width="1172" height="432" rx="18" fill="url(#panel)" stroke="#27445d" stroke-width="1.4"/>
 
-  <g opacity="0.15">
-    <path d="M80 70H1120"/>
-    <path d="M80 120H1120"/>
-    <path d="M80 170H1120"/>
-    <path d="M80 220H1120"/>
-    <path d="M80 270H1120"/>
-    <path d="M80 320H1120"/>
-    <path d="M160 50V330"/>
-    <path d="M280 50V330"/>
-    <path d="M400 50V330"/>
-    <path d="M520 50V330"/>
-    <path d="M640 50V330"/>
-    <path d="M760 50V330"/>
-    <path d="M880 50V330"/>
-    <path d="M1000 50V330"/>
+  <g opacity="0.12" stroke="#7bbad0" stroke-width="1">
+    <path d="M42 76H1158"/>
+    <path d="M42 132H1158"/>
+    <path d="M42 188H1158"/>
+    <path d="M42 244H1158"/>
+    <path d="M42 300H1158"/>
+    <path d="M42 356H1158"/>
+    <path d="M700 38V408"/>
+    <path d="M42 38V408"/>
+    <path d="M1158 38V408"/>
   </g>
 
-  <circle cx="1040" cy="86" r="74" fill="#2dd4bf" opacity="0.12" filter="url(#glow)"/>
-  <circle cx="980" cy="280" r="92" fill="#ffb347" opacity="0.10" filter="url(#glow)"/>
+  <rect x="34" y="34" width="1132" height="34" rx="17" fill="#07101a" stroke="#214158" stroke-width="1.2" opacity="0.98"/>
+  <text x="600" y="56" text-anchor="middle" fill="#e9f7ff" font-family="Consolas, 'Courier New', monospace" font-size="19" font-weight="700" letter-spacing="1.2">
+    ProjetS6-STM32-SimPlane
+  </text>
 
-  <g transform="translate(74 80)">
-    <text x="0" y="0" fill="#f2fbff" font-family="Segoe UI, Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="3">SIMPLANE</text>
-    <text x="0" y="36" fill="#9fc7db" font-family="Segoe UI, Arial, sans-serif" font-size="17" letter-spacing="1.4">
-      STM32 flight bench with sensors, display and buzzer
-    </text>
+  <line x1="700" y1="84" x2="700" y2="396" stroke="#35546d" stroke-width="1.4" opacity="0.9"/>
 
-    <g transform="translate(0 72)" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">
-      <rect x="0" y="0" width="110" height="34" rx="17" fill="#12263b" stroke="#2e4d68"/>
-      <text x="55" y="22" text-anchor="middle" fill="#d7eef9">ADC1</text>
-
-      <rect x="122" y="0" width="110" height="34" rx="17" fill="#12263b" stroke="#2e4d68"/>
-      <text x="177" y="22" text-anchor="middle" fill="#d7eef9">I2C1</text>
-
-      <rect x="244" y="0" width="110" height="34" rx="17" fill="#12263b" stroke="#2e4d68"/>
-      <text x="299" y="22" text-anchor="middle" fill="#d7eef9">SPI1</text>
-
-      <rect x="366" y="0" width="110" height="34" rx="17" fill="#12263b" stroke="#2e4d68"/>
-      <text x="421" y="22" text-anchor="middle" fill="#d7eef9">TIM3</text>
-    </g>
-
-    <g transform="translate(0 132)" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">
-      <rect x="0" y="0" width="258" height="30" rx="15" fill="#0f2234" stroke="#21435f"/>
-      <text x="129" y="19" text-anchor="middle" fill="#b4d4e6">NUCLEO-L152RE + X-NUCLEO-IKS01A3</text>
-    </g>
+  <g font-family="Consolas, 'Courier New', monospace" fill="#edf7ff" letter-spacing="0.4">
+    <text x="312" y="112" text-anchor="middle" font-size="20" font-weight="700">VISUALISATION AVION</text>
+    <text x="856" y="112" text-anchor="middle" font-size="20" font-weight="700">CAPTEURS &amp; ETATS</text>
   </g>
 
-  <g transform="translate(650 70)" filter="url(#shadow)">
-    <path d="M44 124
-             C44 106 58 92 76 92
-             H270
-             C286 92 300 101 308 115
-             L364 115
-             C374 115 382 123 382 133
-             C382 143 374 151 364 151
-             L308 151
-             C300 165 286 174 270 174
-             H76
-             C58 174 44 160 44 142
+  <g font-family="Consolas, 'Courier New', monospace" fill="#9fd0df" font-size="18" font-weight="600">
+    <text x="307" y="148" text-anchor="middle">CIEL</text>
+    <text x="307" y="168" text-anchor="middle">^</text>
+  </g>
+
+  <g transform="translate(0 0)" filter="url(#shadow)">
+    <path d="M332 88
+             L348 110
+             L348 170
+             L406 188
+             L528 218
+             L406 248
+             L348 266
+             L348 326
+             L332 348
+             L316 326
+             L316 266
+             L258 248
+             L136 218
+             L258 188
+             L316 170
+             L316 110
              Z"
-          fill="url(#plane)" opacity="0.96"/>
+          fill="url(#planeFill)" stroke="#eaf8ff" stroke-width="2.3" stroke-linejoin="round"/>
 
-    <path d="M104 121 L182 76 L212 86 L166 130 L212 174 L182 184 L104 139 Z" fill="#7df0e8" opacity="0.95"/>
-    <path d="M220 121 L278 98 L296 106 L260 129 L296 152 L278 160 L220 139 Z" fill="#4bc4d9" opacity="0.95"/>
-    <path d="M95 92 L120 52 L149 52 L132 92 Z" fill="#9cecff"/>
-    <path d="M95 174 L120 214 L149 214 L132 174 Z" fill="#9cecff"/>
-    <circle cx="74" cy="124" r="18" fill="#f2fbff"/>
-    <circle cx="74" cy="124" r="9" fill="#0c1f34"/>
-    <rect x="332" y="113" width="36" height="22" rx="11" fill="#f7fbff" opacity="0.45"/>
+    <path d="M332 96 L332 334" stroke="#d9f2ff" stroke-width="4.4" stroke-linecap="round" opacity="0.92"/>
+    <ellipse cx="332" cy="128" rx="15" ry="20" fill="#08131f" stroke="#eaf8ff" stroke-width="1.5" opacity="0.95"/>
+
+    <path d="M220 218 L444 218" stroke="#d9f2ff" stroke-width="5.2" stroke-linecap="round" opacity="0.58"/>
+    <path d="M286 300 L378 300" stroke="#d9f2ff" stroke-width="4.5" stroke-linecap="round" opacity="0.58"/>
+    <circle cx="230" cy="218" r="11" fill="#08131f" stroke="#eaf8ff" stroke-width="1.4" opacity="0.96"/>
+    <circle cx="434" cy="218" r="11" fill="#08131f" stroke="#eaf8ff" stroke-width="1.4" opacity="0.96"/>
+
+    <path d="M320 348 L332 380 L344 348" fill="none" stroke="#eaf8ff" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M325 348 L325 380" stroke="#eaf8ff" stroke-width="2.1"/>
+    <path d="M339 348 L339 380" stroke="#eaf8ff" stroke-width="2.1"/>
+    <path d="M308 218 L356 218" stroke="#ffcf7a" stroke-width="2" opacity="0.85"/>
+    <path d="M322 300 L342 300" stroke="#ffcf7a" stroke-width="2" opacity="0.85"/>
   </g>
 
-  <g stroke="#84e9ff" stroke-width="2.5" stroke-linecap="round" opacity="0.8">
-    <path d="M870 165 L1015 130"/>
-    <path d="M885 210 L1025 220"/>
-    <path d="M780 135 L700 98"/>
-    <path d="M760 235 L695 275"/>
+  <g font-family="Consolas, 'Courier New', monospace" fill="#9fd0df" font-size="18" font-weight="600">
+    <text x="307" y="392" text-anchor="middle">v</text>
+    <text x="307" y="414" text-anchor="middle">SOL</text>
   </g>
 
-  <g font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">
-    <g transform="translate(982 112)">
-      <circle cx="0" cy="0" r="11" fill="url(#accent)"/>
-      <rect x="18" y="-15" width="114" height="30" rx="15" fill="#12263b" stroke="#4d6277"/>
-      <text x="75" y="5" text-anchor="middle" fill="#f5f8fb">LSM6DSO</text>
-    </g>
-    <g transform="translate(986 224)">
-      <circle cx="0" cy="0" r="11" fill="url(#accent)"/>
-      <rect x="18" y="-15" width="114" height="30" rx="15" fill="#12263b" stroke="#4d6277"/>
-      <text x="75" y="5" text-anchor="middle" fill="#f5f8fb">HTS221</text>
-    </g>
-    <g transform="translate(684 98)">
-      <circle cx="0" cy="0" r="11" fill="url(#accent)"/>
-      <rect x="-152" y="-15" width="124" height="30" rx="15" fill="#12263b" stroke="#4d6277"/>
-      <text x="-90" y="5" text-anchor="middle" fill="#f5f8fb">LPS22HH</text>
-    </g>
-    <g transform="translate(682 276)">
-      <circle cx="0" cy="0" r="11" fill="url(#accent)"/>
-      <rect x="-166" y="-15" width="138" height="30" rx="15" fill="#12263b" stroke="#4d6277"/>
-      <text x="-97" y="5" text-anchor="middle" fill="#f5f8fb">MAX7219</text>
-    </g>
+  <g font-family="Consolas, 'Courier New', monospace" fill="#eaf5fb" font-size="15.5">
+    <text x="724" y="150">TEMP     :  30 C      PRESSION : 1007.1 hPa</text>
+    <text x="724" y="174">HUMIDITE :  53 %      MAGNETIQUE:   14 uT</text>
+    <text x="724" y="198">ALTITUDE :  48 m      ALT REF   :   48 m</text>
+    <text x="724" y="222">ALT REL  :  +0 m      ACC X     : +0.00 g</text>
+    <text x="724" y="246">ACC Y    :  +0.00 g   ACC Z     : +1.01 g</text>
+    <text x="724" y="270">ROULIS   :  +00 deg   TANGAGE   : +00 deg</text>
+    <text x="724" y="294">LACET Z  :  -01.4 dps MOTEUR    : OFF</text>
+    <text x="724" y="318">GAZ      :  0 %       RICHESSE   : 0 %</text>
+    <text x="724" y="342">RESERVOIR:  94 %      TRAIN      : HAUT</text>
+    <text x="724" y="366">VOLETS   :  UP        SYSTEME    : OK</text>
   </g>
 
-  <g opacity="0.9">
-    <rect x="860" y="54" width="222" height="34" rx="17" fill="#0f2234" stroke="#21435f"/>
-    <text x="971" y="76" text-anchor="middle" fill="#d7eef9" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">
-      ADC + I2C + SPI + PWM cockpit logic
-    </text>
+  <g font-family="Consolas, 'Courier New', monospace" fill="#9fd0df" font-size="15">
+    <text x="724" y="392">GAZ         :   [----------]</text>
+    <text x="724" y="418">RICHESSE    :   [----------]</text>
+    <text x="900" y="392">RESERVOIR   :   [#########-]</text>
+    <text x="900" y="418">VOLETS      :   [----------]</text>
   </g>
 
-  <text x="74" y="308" fill="#7fb7cc" font-family="Segoe UI, Arial, sans-serif" font-size="13" letter-spacing="1.2">
-    SENSOR DRIVEN FLIGHT SIMULATION
+  <text x="724" y="448" fill="#eaf5fb" font-family="Consolas, 'Courier New', monospace" font-size="15" font-weight="700">
+    ALARME : aucun evenement critique
   </text>
 </svg>
