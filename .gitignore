@@ -1,0 +1,24 @@
+# STM32CubeIDE / Eclipse metadata that should stay out of the public repo
+Debug/
+Release/
+Backups/
+
+# Common build outputs in case they appear outside the standard folders
+*.o
+*.d
+*.su
+*.cyclo
+*.map
+*.list
+*.elf
+*.hex
+*.bin
+*.axf
+*.out
+
+# Local OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*.bak

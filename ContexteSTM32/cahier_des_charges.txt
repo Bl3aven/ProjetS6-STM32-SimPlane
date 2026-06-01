@@ -1,0 +1,180 @@
+# Plane Project : 
+
+Ce projet consiste à reproduire le fonctionnement grossier d'un avion et des capteurs qui lui sont embraqués.
+
+Pour se faire, lorsqu'on branche la carte, toutes les sorties doivent s'allumer pendant 2 secondes afin de permettre de controler que tout les composants soient bien fonctionnels.
+
+Par la suite tout s'éteindra et on verra s'afficher ISEN sur l'éffichage 7 Segments jusqu'à temps qu'on appuie sur le bouton mode (bouton bleu intégré sur la carte NUCLEO)
+
+## Partie Modes
+L'affichage 7 segments permetra d'indiquer le mode actuel : 
+Mode 1 - led 0 allumée pendant 1 seconde et affichage de la température ambiante sur l'affichage 7 segments en faisant défiler le texte. (TMP=23C)
+
+Mode 2 - led 1 allumée pendant 1 seconde et affichage de la pression athmosphérique sur l'affichage 7 segments en faisant défiler le texte. (PRES=1013 hPa)
+
+Mode 3 - led 2 allumée pendant 1 seconde et affichage du flux magnétique sur l'affichage 7 segments en faisant défiler le texte et affichage du niveau de distance à partir des leds de 0 à 7 pour faire office d'échelle approximative. (ex : MAG=25) 
+
+Mode 4 - led 3 allumée pendant 1 seconde et affichage de l'humidité présente dans l'air qu'on affichera sur 7 segments en faisant défiler le texte et on utilisera également l'affichage du niveau de  à partir des leds de 0 à 7 (pour 0 à 100%) pour faire office d'échelle approximative. (ex : HUMI=25PC et 2 leds allumé sur les 8) 
+
+Mode 5 - led 4 allumée pendant 1 seconde et affichage l'état fictif du réservoir d'essence pouvant tenir 1h si le réservoir est plein à 100% et que la manette des gaz est à 100% sur l'affichage 7 segments en faisant défiler le texte et affichage du niveau du réservoir à partir des leds de 0 à 7 pour faire office d'échelle approximative. (ex : RESERVE=20PC)
+
+Mode 6 - led 5 allumée pendant 1 seconde et affichage l'état haut ou bas du train d'attérissage qu'on affichera sur le 7 segments (HAUT ou BAS) et interpréation du niveau via les leds toute les leds allumées pour le niveau BAS et aucune leds allumés pour le niveau haut.
+
+Mode 7 - led 6 allumée pendant 1 seconde et affichage l'état haut ou bas des volets d'attérissage sachant qu'il existe 3 positions possible ( rentré, sortie, intermédiaire) qu'on affichera sur le 7 segments (DOWN, MID, UP) et interpréation du niveau via les leds de 0 à 7 pour faire office d'échelle approximative où on allumera les leds 4 par 4 pour chacun des niveau (ex: pour le niveau mid -> 4 leds allumées, niveau bas -> 8 leds allumées, niveau haut aucune leds allumées)
+
+Mode 8 - led 7 allumée pendant 1 seconde et affichage sur l'affichage 7 segments du mot ISEN avec une animation de respiration via controle de la luminosité.
+
+On utilisera deux potentiomètre qui feront office de manette de gaz et de richesse afin de piloter le moteur.
+La position de l'avion sera déterminée précisement à l'aide de la centrale à inertie qui se calibrera au démarrage de la carte. 
+
+Pour démarrer le moteur de l'avion je dois tout en maintenant le bouton 1 intégré à la carte Nucléo appuyer sur le bouton 1 de la carte ISEN32 et je dois m'assurer le potentiomètre qui gère la richesse soit au maximum (+ ou - 5%) ainsi que le potentiomètre qui gère la manette des gaz qui doit être au minimum à 20% sinon lorsque le moteur démarrera, il tournera par à-coups et finira par s'arrêter avec un bip du buzzer pour signaler l'arrêt du moteur avec un message sur l'affichage 7 segments indiquant STOP.
+ 
+Si ces conditions préalables sont remplies le moteur démarre et la vitesse de rotation dépend directement de du potentiomètre gérant la manette des gaz et du potentiomètre gérant la richesse d'essence. Si on coupe l'arrivé d'essence, le moteur commencera à brouter et finira par s'arrêter en dessous de 5% avec un bip du buzzer pour dire que le moteur s'est arrêté ainsi qu' un message sur l'affichage 7 segments indiquant STOP.
+ 
+Au démarrage de la carte, la centrale à inertie se calibrera afin de se positionner dans l'espace. Si on lève la carte en l'air mais que l'avion n'a pas son moteur qui est démarré, le buzzer bip pour indiquer que la situation n'est pas réaliste et un message POSE s'affiche et clignotte sur l'affichage 7 segements à pleine luminositée (sinon on laissera à 50-60% pour le reste du temps) jusqu'à temps que l'utilisateur repose la carte au niveau de sa hauteur d'origine.
+
+Sur la carte ISEN32
+Pour abaisser le train de l'avion on appui sur BTN4. 
+Pour le rentrer on appui sur BTN2. 
+Pour abaisser les volets de l'avion on appui sur BTN3 
+Pour rentrer les volets, on appui sur BTN1. A chaque action, un message est affiché sur l'afficheur 7 segments.
+ 
+Lorsqu'on maintient bouton1 de la Nucleo et on appui sur BTN2 de l'isen32, on augmente de 10% l'essence dans le réservoir de l'avion (un message défilant est affiché sur l'affichage 7 segments). 
+On appuira sur BTN1 nucléo et BTN2 de l'ISEN32 pour baisser le niveau d'essence dans le réservoirde 10%. 
+
+Si le niveau du réservoir est à 10% et qu'on souhaite encore réduire le niveau d'essence, on réduira alors de 1% par 1%. Si le niveau d'essence atteint 0% le moteur s'arrête on entendra alors un bip et un message STOP sur l'affichage 7 segments. 
+Dans les 10 derniers pourcents, le moteur broutera de manière aléatoire toutes les 2 à 5 secondes et la led 7 se mettra à clignoter également de plus en plus vite au fur et à mesure que l'essence diminuera
+
+
+Voici les Initialisations obligatoires effectuées au préalable sur CubeMX : 
+
+🧠 1. Microcontrôleur (général)
+HAL_Init()
+SystemClock_Config()
+🔌 2. GPIO (Entrées / Sorties)
+📍 Périphérique :
+GPIO
+📍 Fonctions CubeMX :
+MX_GPIO_Init()
+📍 Utilisation :
+LEDs (sortie)
+Boutons (entrée / interruption)
+Chip Select SPI (CS)
+📍 Registres associés :
+GPIOx_MODER
+GPIOx_ODR
+GPIOx_PUPDR
+
+👉 Référence :
+
+🔘 3. Interruptions EXTI (boutons)
+📍 Périphériques :
+EXTI
+NVIC
+📍 Fonctions :
+HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+EXTI9_5_IRQHandler()
+EXTI15_10_IRQHandler()
+📍 Configuration CubeMX :
+GPIO en mode :
+GPIO_MODE_IT_RISING
+ou FALLING
+
+👉 Référence :
+
+⏱️ 4. Timer (base de temps)
+📍 Périphérique :
+TIM6 (timer basique)
+📍 Fonctions :
+MX_TIM6_Init()
+HAL_TIM_Base_Start_IT(&htim6)
+HAL_TIM_PeriodElapsedCallback()
+📍 Variables typiques :
+flag_1s
+cpt
+
+👉 Référence :
+
+🔢 5. SPI (afficheur 7 segments)
+📍 Périphérique :
+SPI1
+📍 Fonctions :
+MX_SPI1_Init()
+HAL_SPI_Transmit()
+📍 Pins :
+SCK
+MOSI
+CS (GPIO manuel)
+📍 Driver utilisé :
+MAX7219
+
+Fonctions principales :
+
+MAX7219_Init()
+MAX7219_DisplayTestStart()
+MAX7219_DisplayTestStop()
+MAX7219_DisplayChar()
+MAX7219_Clear()
+
+👉 Référence :
+
+🔌 6. ADC (conversion analogique)
+📍 Périphérique :
+ADC1
+📍 Fonctions :
+MX_ADC_Init()
+HAL_ADC_Start()
+HAL_ADC_PollForConversion()
+HAL_ADC_GetValue()
+HAL_ADC_Stop()
+📍 Variable :
+uint32_t digitalValue
+
+👉 Référence :
+
+📡 7. UART (debug / printf)
+📍 Périphérique :
+USART2
+📍 Fonctions :
+MX_USART2_UART_Init()
+printf() (via retarget)
+📡 8. I2C (capteurs)
+📍 Périphérique :
+I2C1 ou I2C2
+📍 Fonctions :
+MX_I2C1_Init()
+librairie X-CUBE-MEMS
+📍 Capteur typique :
+LIS2DW12
+
+👉 Référence :
+
+🔊 9. PWM (buzzer)
+📍 Périphérique :
+TIM2 ou autre timer PWM
+📍 Fonctions :
+HAL_TIM_PWM_Start()
+🧩 🔄 Ordre d’initialisation recommandé
+HAL_Init();
+SystemClock_Config();
+
+MX_GPIO_Init();
+MX_USART2_UART_Init();
+MX_SPI1_Init();
+MX_ADC_Init();
+MX_TIM6_Init();
+MX_I2C1_Init();
+
+MAX7219_Init();
+
+HAL_TIM_Base_Start_IT(&htim6);
+🧠 Résumé rapide (tableau)
+Module	Nom STM32	Fonction principale
+GPIO	GPIOx	LEDs / boutons
+Interruptions	EXTI / NVIC	Boutons
+Timer	TIM6	Base 1 seconde
+SPI	SPI1	Afficheur 7 segments
+ADC	ADC1	Lecture analogique
+UART	USART2	Debug
+I2C	I2C1	Capteurs
+PWM	TIM2	Buzzer
