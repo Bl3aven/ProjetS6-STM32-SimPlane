@@ -46,6 +46,7 @@ simule des etats de vol, de carburant, de train et de volets.
 - [Fichiers clefs](#fichiers-clefs)
 - [Build, flash et debug](#build-flash-et-debug)
 - [Depannage rapide](#depannage-rapide)
+- [FAQ](#faq)
 - [Limites connues](#limites-connues)
 - [Documentation de contexte](#documentation-de-contexte)
 - [Licence](#licence)
@@ -481,6 +482,330 @@ logicielle:
 - la ligne `SCL` est pulsee plusieurs fois si `SDA` reste a 0;
 - l'etat des lignes est affiche avant et apres recovery;
 - le bus est ensuite reconfigure en `I2C1` normal.
+
+## FAQ
+
+Les questions ci-dessous sont celles qui peuvent facilement tomber a l'oral.
+Les reponses sont courtes, factuelles, et directement liees au code.
+
+<details>
+<summary>1. Quel est l'objectif principal du projet ?</summary>
+
+Simuler un avion miniature sur STM32 avec des capteurs, un afficheur 7 segments,
+une barre de LEDs et un buzzer, pour reproduire un cockpit pedagogique.
+
+</details>
+
+<details>
+<summary>2. Quel materiel compose le systeme ?</summary>
+
+Une `NUCLEO-L152RE`, une `X-NUCLEO-IKS01A3`, une carte utilisateur type `ISEN32`,
+un afficheur `MAX7219`, 8 LEDs, 4 boutons, 2 potentiometres et un buzzer.
+
+</details>
+
+<details>
+<summary>3. Pourquoi avoir choisi une carte NUCLEO STM32 ?</summary>
+
+Elle fournit assez de ressources pour gerer les capteurs, l'ADC, le SPI, l'I2C,
+le PWM et les interruptions tout en restant simple a manipuler en TP.
+
+</details>
+
+<details>
+<summary>4. Pourquoi utiliser la shield IKS01A3 ?</summary>
+
+Parce qu'elle regroupe plusieurs capteurs utiles sur un seul module, ce qui
+simplifie le cablage et permet de simuler plusieurs grandeurs physiques.
+
+</details>
+
+<details>
+<summary>5. Pourquoi avoir pris un MAX7219 pour l'affichage ?</summary>
+
+Il pilote directement un afficheur 7 segments avec peu de lignes, gere le
+multiplexage et permet aussi le controle de la luminosite.
+
+</details>
+
+<details>
+<summary>6. Pourquoi ne pas utiliser un RTOS ?</summary>
+
+Le besoin reste simple. Une super-loop cooperative suffit et rend le code plus
+facile a expliquer et a maintenir dans ce contexte.
+
+</details>
+
+<details>
+<summary>7. Comment le programme est-il organise ?</summary>
+
+Il y a une phase d'initialisation, puis une boucle principale qui appelle des
+taches periodiques basees sur `HAL_GetTick()`.
+
+</details>
+
+<details>
+<summary>8. A quoi sert `APP_DISPLAY_DIAG_ONLY` ?</summary>
+
+C'est un mode de diagnostic qui teste uniquement l'afficheur. Quand il vaut `1`,
+la simulation avion complete est desactivee.
+
+</details>
+
+<details>
+<summary>9. Que fait le programme au demarrage en mode complet ?</summary>
+
+Il initialise le HAL, les peripheriques, lance l'auto-test, scanne l'I2C,
+initialise les capteurs, calibre l'inertie, puis affiche `ISEN`.
+
+</details>
+
+<details>
+<summary>10. Pourquoi faire un auto-test au demarrage ?</summary>
+
+Pour verifier rapidement que les LEDs, l'afficheur et le buzzer fonctionnent
+avant d'entrer dans la logique de simulation.
+
+</details>
+
+<details>
+<summary>11. Comment le code gere-t-il un bus I2C bloque ?</summary>
+
+Il tente une recuperation logicielle du bus en relachant les lignes, en pulsant
+`SCL` si besoin, puis en reinitialisant `I2C1`.
+
+</details>
+
+<details>
+<summary>12. Quels capteurs sont utilises dans le projet ?</summary>
+
+`LSM6DSO`, `LIS2DW12`, `LIS2MDL`, `HTS221`, `LPS22HH` et `STTS751`.
+
+</details>
+
+<details>
+<summary>13. Quel capteur est prioritaire pour la temperature ?</summary>
+
+`HTS221` en premier, puis `STTS751`, puis `LPS22HH` si les precedents ne sont
+pas disponibles.
+
+</details>
+
+<details>
+<summary>14. A quoi servent la pression et le magnetisme ?</summary>
+
+La pression sert a l'alerte `POSE` et a l'affichage. Le magnetometre sert au
+mode 3 et a une jauge approximative.
+
+</details>
+
+<details>
+<summary>15. Comment sont lus les potentiometres ?</summary>
+
+Via `ADC1` en scan sur deux voies. `RV1` sert a la manette des gaz et `RV2` a
+la richesse.
+
+</details>
+
+<details>
+<summary>16. Pourquoi utiliser des interruptions pour les boutons ?</summary>
+
+Pour reagir immediatement aux appuis sans poller en permanence les entrees, tout
+en gardant un anti-rebond logiciel.
+
+</details>
+
+<details>
+<summary>17. Pourquoi vider les evenements bouton sous section critique ?</summary>
+
+Pour lire et remettre a zero les flags de maniere atomique, sans course entre le
+callback EXTI et la boucle principale.
+
+</details>
+
+<details>
+<summary>18. A quoi sert le bouton bleu B1 de la NUCLEO ?</summary>
+
+Seul, il change de mode. Combine a `BTN1` ou `BTN2`, il sert a gerer le moteur
+ou le carburant.
+
+</details>
+
+<details>
+<summary>19. A quoi servent BTN1, BTN2, BTN3 et BTN4 ?</summary>
+
+`BTN1` monte les volets, `BTN2` remonte le train, `BTN3` baisse les volets et
+`BTN4` baisse le train.
+
+</details>
+
+<details>
+<summary>20. Comment les LEDs sont-elles utilisees ?</summary>
+
+Elles forment une barre de niveau. Selon le mode, elles representent une valeur,
+le train, les volets, ou un indicateur carburant faible.
+
+</details>
+
+<details>
+<summary>21. Que fait le mode 1 ?</summary>
+
+Il affiche la temperature ambiante au format `TMP=xxC` et pulse la LED `L0`.
+
+</details>
+
+<details>
+<summary>22. Que fait le mode 2 ?</summary>
+
+Il affiche la pression atmospherique au format `PRES=xxxxHPA` et pulse la LED
+`L1`.
+
+</details>
+
+<details>
+<summary>23. Que fait le mode 3 ?</summary>
+
+Il affiche `MAG=xxxx` et transforme le magnetisme en jauge 0 a 8 LEDs. La LED
+`L2` pulse a l'entree du mode.
+
+</details>
+
+<details>
+<summary>24. Que fait le mode 4 ?</summary>
+
+Il affiche l'humidite au format `HUMI=xxPC` et l'illustre avec la barre de
+LEDs. La LED `L3` pulse.
+
+</details>
+
+<details>
+<summary>25. Que fait le mode 5 ?</summary>
+
+Il affiche le niveau de carburant et l'illustre avec la barre de LEDs. La LED
+`L4` pulse.
+
+</details>
+
+<details>
+<summary>26. Que fait le mode 6 ?</summary>
+
+Il montre l'etat du train avec `BAS` ou `HAUT`. Quand le train est bas, toutes
+les LEDs sont allumees.
+
+</details>
+
+<details>
+<summary>27. Que fait le mode 7 ?</summary>
+
+Il affiche l'etat des volets avec `UP`, `MID` ou `DOWN`. La barre de LEDs
+vaut 0, 4 ou 8 selon la position.
+
+</details>
+
+<details>
+<summary>28. Que fait le mode 8 ?</summary>
+
+Il affiche `ISEN` avec une respiration de luminosite sur le MAX7219. La LED
+`L7` pulse a l'entree du mode.
+
+</details>
+
+<details>
+<summary>29. Quelles sont les conditions pour demarrer le moteur ?</summary>
+
+Il faut une richesse d'au moins `95%`, une manette des gaz d'au moins `20%` et
+du carburant disponible.
+
+</details>
+
+<details>
+<summary>30. Que se passe-t-il si les conditions de demarrage ne sont pas reunies ?</summary>
+
+Le moteur passe en mode `BROUT`, un message s'affiche, puis il s'arrete apres
+environ `3 s` avec un bip et le message `STOP`.
+
+</details>
+
+<details>
+<summary>31. Comment la consommation de carburant est-elle calculee ?</summary>
+
+Le code utilise un accumulateur qui depend du temps ecoule, de la manette des
+gaz et de la richesse. Quand le seuil est depasse, le carburant diminue.
+
+</details>
+
+<details>
+<summary>32. Pourquoi stocker le carburant en permille ?</summary>
+
+Pour avoir des pas de `10%` en regime normal et des pas fins de `1%` quand le
+niveau devient faible.
+
+</details>
+
+<details>
+<summary>33. Que se passe-t-il quand le carburant devient faible ?</summary>
+
+Le moteur peut brouter de facon aleatoire toutes les `2` a `5 s`, et la LED
+`L7` clignote de plus en plus vite.
+
+</details>
+
+<details>
+<summary>34. Que se passe-t-il si le carburant tombe a 0% ?</summary>
+
+Le moteur s'arrete immediatement, le message `STOP` est affiche et un bip de
+fin est emis.
+
+</details>
+
+<details>
+<summary>35. Comment l'alerte POSE est-elle detectee ?</summary>
+
+Quand le moteur est stoppe, le firmware compare l'acceleration et la pression
+actuelles a la reference calibree au demarrage. Si l'ecart depasse les seuils,
+`POSE` est declenchee.
+
+</details>
+
+<details>
+<summary>36. Pourquoi calibrer l'inertie au demarrage ?</summary>
+
+Pour memoriser la position de reference de la carte et pouvoir detecter ensuite
+si la maquette a ete levee de facon non realiste.
+
+</details>
+
+<details>
+<summary>37. Comment le firmware gere-t-il l'affichage des messages ?</summary>
+
+Un message temporaire a priorite pendant une duree donnee, puis le texte du mode
+reprend. Si le texte depasse 8 caracteres, il defile.
+
+</details>
+
+<details>
+<summary>38. Pourquoi avoir code un driver MAX7219 personnalise ?</summary>
+
+Pour controler precisement l'allumage, la luminosite, le clear, le test
+d'affichage et le jeu de caracteres supporte.
+
+</details>
+
+<details>
+<summary>39. Quels caracteres l'afficheur supporte-t-il vraiment ?</summary>
+
+Principalement les chiffres, plusieurs lettres utiles, l'espace, `-` et `=`.
+Les caracteres non geres s'affichent comme des blancs.
+
+</details>
+
+<details>
+<summary>40. A quoi servent TIM3, TIM6 et USART2 ?</summary>
+
+`TIM3` genere le PWM du buzzer, `TIM6` sert de base de temps periodique et
+`USART2` est utilise pour les `printf` de debug a `115200 8N1`.
+
+</details>
 
 ## Limites connues
 
